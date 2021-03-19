@@ -37,14 +37,18 @@ module Cloudflare
 
     # @param api_key [String] `X-Auth-Key` or `X-Auth-User-Service-Key` if no email provided.
     # @param email [String] `X-Auth-Email`, your email address for the account.
-    def initialize(url = DEFAULT_URL, key: nil, email: nil, **options)
+    def initialize(url = DEFAULT_URL, key: nil, email: nil, token: nil, **options)
       headers = options[:headers] || {}
 
-      if email.nil?
-        headers['X-Auth-User-Service-Key'] = key
+      if token
+        headers['Authorization'] = "Bearer #{token}"
       else
-        headers['X-Auth-Key'] = key
-        headers['X-Auth-Email'] = email
+        if email.nil?
+          headers['X-Auth-User-Service-Key'] = key
+        else
+          headers['X-Auth-Key'] = key
+          headers['X-Auth-Email'] = email
+        end
       end
 
       # Convert HTTP API responses to our own internal response class:

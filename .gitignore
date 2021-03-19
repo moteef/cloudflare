@@ -4,3 +4,4 @@ Gemfile*
 tags
 .byebug_history
 .rspec_status
+.idea
