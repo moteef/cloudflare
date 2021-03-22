@@ -42,13 +42,11 @@ module Cloudflare
 
       if token
         headers['Authorization'] = "Bearer #{token}"
-      else
-        if email.nil?
-          headers['X-Auth-User-Service-Key'] = key
-        else
-          headers['X-Auth-Key'] = key
-          headers['X-Auth-Email'] = email
-        end
+      elsif email
+        headers['X-Auth-Key'] = key
+        headers['X-Auth-Email'] = email
+      elsif key
+        headers['X-Auth-User-Service-Key'] = key
       end
 
       # Convert HTTP API responses to our own internal response class:
